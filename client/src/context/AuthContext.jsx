@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
 
     // Handle 401 unauthorized events
     const handleUnauthorized = () => {
+      localStorage.removeItem('nexora_token');
       setUser(null);
       setMemberships([]);
     };
@@ -44,7 +45,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await authApi.login({ email, password });
-    if (res.success) {
+    if (res.success && res.data) {
+      if (res.data.token) {
+        localStorage.setItem('nexora_token', res.data.token);
+      }
+      if (res.data.user) {
+        setUser(res.data.user);
+      }
       // Re-fetch user + memberships
       await checkAuth();
     }
@@ -53,7 +60,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     const res = await authApi.register({ name, email, password });
-    if (res.success) {
+    if (res.success && res.data) {
+      if (res.data.token) {
+        localStorage.setItem('nexora_token', res.data.token);
+      }
+      if (res.data.user) {
+        setUser(res.data.user);
+      }
       await checkAuth();
     }
     return res;
@@ -63,11 +76,13 @@ export const AuthProvider = ({ children }) => {
     try {
       await authApi.logout();
     } finally {
+      localStorage.removeItem('nexora_token');
+      localStorage.removeItem('nexora_active_org_id');
       setUser(null);
       setMemberships([]);
-      localStorage.removeItem('nexora_active_org_id');
     }
   };
+
 
   return (
     <AuthContext.Provider

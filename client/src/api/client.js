@@ -14,12 +14,22 @@ export const apiClient = axios.create({
   }
 });
 
+// Request interceptor to attach JWT token if present in localStorage (cross-domain fallback)
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('nexora_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Response interceptor for consistent error extraction and handling 401
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
     // If unauthorized, notify subscriber or redirect
     if (error.response && error.response.status === 401) {
+      localStorage.removeItem('nexora_token');
       if (
         !window.location.pathname.startsWith('/login') &&
         !window.location.pathname.startsWith('/register')
@@ -27,6 +37,7 @@ apiClient.interceptors.response.use(
         window.dispatchEvent(new CustomEvent('auth:unauthorized'));
       }
     }
+
 
     const errorMsg =
       error.response?.data?.error?.message ||

@@ -10,9 +10,16 @@ export const Register = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { register } = useAuth();
+  const { register, user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (user) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [user, navigate]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

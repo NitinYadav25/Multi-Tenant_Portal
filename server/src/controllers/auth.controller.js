@@ -41,6 +41,7 @@ export const register = asyncHandler(async (req, res, next) => {
   return sendSuccess(
     res,
     {
+      token,
       user: {
         id: user._id,
         name: user.name,
@@ -70,6 +71,7 @@ export const login = asyncHandler(async (req, res, next) => {
   res.cookie('token', token, getCookieOptions());
 
   return sendSuccess(res, {
+    token,
     user: {
       id: user._id,
       name: user.name,
@@ -77,6 +79,7 @@ export const login = asyncHandler(async (req, res, next) => {
     }
   });
 });
+
 
 export const logout = asyncHandler(async (req, res) => {
   res.clearCookie('token', {

@@ -9,12 +9,20 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname;
+  const targetPath = (from && from !== '/login' && from !== '/register') ? from : '/dashboard';
+
+  // If user is already authenticated, redirect to workspace
+  React.useEffect(() => {
+    if (user) {
+      navigate(targetPath, { replace: true });
+    }
+  }, [user, navigate, targetPath]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,13 +36,14 @@ export const Login = () => {
       setError('');
       await login(email, password);
       showToast('Logged in successfully!', 'success');
-      navigate(from, { replace: true });
+      navigate(targetPath, { replace: true });
     } catch (err) {
       setError(err.message || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
+
 
   const fillDemo = () => {
     setEmail('demo@example.com');
