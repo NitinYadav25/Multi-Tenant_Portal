@@ -11,6 +11,24 @@ jobs:
     name: Backend Test Suite
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd mongosh
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      MONGODB_URI: mongodb://127.0.0.1:27017/nexora_test
+      JWT_SECRET: test_jwt_secret_key_at_least_32_characters_for_ci_pipeline
+      CLIENT_URL: http://localhost:5173
+      COOKIE_SAMESITE: lax
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -31,6 +49,7 @@ jobs:
         run: |
           cd server
           npm test
+
 
   build-client:
     name: Frontend Build Check
