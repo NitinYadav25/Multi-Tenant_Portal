@@ -239,7 +239,7 @@ Base URL: `/api` (Standard JSON contract)
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/<your-username>/nexora-multi-tenant-portal.git
+git clone https://github.com/NitinYadav25/nexora-multi-tenant-portal.git
 cd nexora-multi-tenant-portal
 
 # Install backend dependencies
