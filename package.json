@@ -1,0 +1,24 @@
+{
+  "name": "nexora-multi-tenant-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-Tenant Project Portal with strict tenant isolation, RBAC, and glassmorphism UI",
+  "scripts": {
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "seed": "npm run seed --prefix server",
+    "test": "npm test --prefix server",
+    "build:client": "npm run build --prefix client",
+    "build": "npm run build:client"
+  },
+  "keywords": [
+    "multi-tenant",
+    "mern",
+    "tenant-isolation",
+    "rbac",
+    "jwt",
+    "react"
+  ],
+  "author": "",
+  "license": "ISC"
+}
