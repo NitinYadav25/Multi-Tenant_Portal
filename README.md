@@ -217,7 +217,7 @@ Base URL: `/api` (Standard JSON contract)
 |---|:---:|---|---|
 | `PORT` | No | `5000` | Port Express server listens on |
 | `NODE_ENV` | No | `development` | Environment mode (`development`, `production`, `test`) |
-| `MONGODB_URI` | **Yes** | `mongodb://localhost:27017/nexora` | MongoDB connection string |
+| `MONGODB_URI` | **Yes** | `mongodb+srv://...` or `mongodb://localhost:27017/nexora` | MongoDB Atlas / local connection string (DB: `Multi-Tenant-Portal`) |
 | `JWT_SECRET` | **Yes** | — | Strong secret key (min 16 chars) for signing tokens |
 | `JWT_EXPIRES_IN` | No | `7d` | Token expiration duration |
 | `CLIENT_URL` | No | `http://localhost:5173` | Explicit CORS origin for browser requests |
