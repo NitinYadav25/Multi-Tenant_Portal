@@ -329,6 +329,28 @@ input, select, textarea {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+select {
+  cursor: pointer;
+  color-scheme: inherit;
+}
+
+select option {
+  background-color: var(--menu-bg, #141432);
+  color: var(--ink, #f1f0ff);
+  padding: 8px 12px;
+}
+
+:root[data-theme="dark"] select option,
+:root:not([data-theme="light"]) select option {
+  background-color: #141432;
+  color: #f1f0ff;
+}
+
+:root[data-theme="light"] select option {
+  background-color: #ffffff;
+  color: #17173a;
+}
+
 input:focus, select:focus, textarea:focus {
   border-color: var(--a);
   box-shadow: 0 0 0 4px #6d5dfc22;
@@ -338,6 +360,7 @@ textarea {
   min-height: 90px;
   resize: vertical;
 }
+
 
 /* Split Login / Register Layout */
 #login {
