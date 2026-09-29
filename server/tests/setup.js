@@ -17,7 +17,15 @@ beforeAll(async () => {
   const candidateUri = process.env.MONGODB_URI;
   if (candidateUri && candidateUri.startsWith('mongodb://')) {
     try {
-      await mongoose.connect(candidateUri, { serverSelectionTimeoutMS: 2500 });
+      const poolId = process.env.VITEST_POOL_ID || process.pid;
+      const url = new URL(candidateUri);
+      const basePath = (url.pathname && url.pathname !== '/')
+        ? url.pathname.replace(/^\//, '')
+        : 'nexora_test';
+      url.pathname = `/${basePath}_${poolId}`;
+      const uri = url.toString();
+
+      await mongoose.connect(uri, { serverSelectionTimeoutMS: 2500 });
       return;
     } catch {
       // If candidate URI connection fails, fall through to MongoMemoryServer
@@ -36,7 +44,14 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.disconnect();
+  if (mongoose.connection.readyState !== 0) {
+    try {
+      await mongoose.connection.dropDatabase();
+    } catch {
+      // ignore
+    }
+    await mongoose.disconnect();
+  }
   if (mongoServer) {
     await mongoServer.stop();
   }
