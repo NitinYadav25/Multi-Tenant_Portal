@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TASK_STATUS, TASK_PRIORITY } from '../utils/constants.js';
+import { XIcon } from './Icons.jsx';
 
 /* Base Modal Container */
 export const Modal = ({ isOpen, onClose, title, children }) => {
@@ -33,7 +34,7 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
         <div className="modal-header">
           <h2 id="modal-title">{title}</h2>
           <button className="modal-close" onClick={onClose} aria-label="Close modal">
-            ✕
+            <XIcon size={16} />
           </button>
         </div>
         {children}

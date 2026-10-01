@@ -5,6 +5,7 @@ import { useToast } from '../context/ToastContext.jsx';
 import { membersApi } from '../api/client.js';
 import { getGradientStyle, getInitials } from '../utils/colors.js';
 import { InviteMemberModal, ConfirmModal } from '../components/Modals.jsx';
+import { PlusIcon } from '../components/Icons.jsx';
 
 export const Members = () => {
   const { activeOrg, activeRole, refetchIndex } = useOrg();
@@ -92,7 +93,8 @@ export const Members = () => {
 
         {canInvite && (
           <button className="btn" onClick={() => setInviteModalOpen(true)}>
-            ＋ Invite member
+            <PlusIcon size={14} />
+            <span>Invite member</span>
           </button>
         )}
       </div>
@@ -126,9 +128,9 @@ export const Members = () => {
                     style={{
                       width: 'auto',
                       padding: '4px 10px',
-                      borderRadius: 99,
+                      borderRadius: 6,
                       fontSize: 12,
-                      fontWeight: 700,
+                      fontWeight: 600,
                       cursor: 'pointer'
                     }}
                     aria-label={`Change role for ${memberUser.name}`}

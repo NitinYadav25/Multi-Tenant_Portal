@@ -12,7 +12,7 @@ export const ProtectedRoute = () => {
     return (
       <div style={{ display: 'grid', placeItems: 'center', minHeight: '100vh', color: 'var(--mut)' }}>
         <div style={{ textAlign: 'center' }}>
-          <div className="av grad" style={{ width: 48, height: 48, borderRadius: 16, margin: '0 auto 16px', fontSize: 20 }}>
+          <div className="av grad" style={{ width: 48, height: 48, borderRadius: 8, margin: '0 auto 16px', fontSize: 20 }}>
             N
           </div>
           <div>Loading workspace session...</div>

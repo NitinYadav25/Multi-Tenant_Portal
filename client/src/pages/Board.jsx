@@ -7,6 +7,7 @@ import { projectsApi, tasksApi, membersApi } from '../api/client.js';
 import { TASK_STATUS, TASK_PRIORITY } from '../utils/constants.js';
 import { getGradientStyle, getInitials, formatDate } from '../utils/colors.js';
 import { TaskModal, CreateProjectModal, ConfirmModal } from '../components/Modals.jsx';
+import { ClipboardIcon, PlusIcon, CalendarIcon, XIcon, InfoIcon } from '../components/Icons.jsx';
 
 export const Board = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -204,21 +205,22 @@ export const Board = () => {
 
   const columns = [
     { key: TASK_STATUS.TODO, label: 'To do', color: '#f59e0b' },
-    { key: TASK_STATUS.IN_PROGRESS, label: 'In progress', color: '#6d5dfc' },
-    { key: TASK_STATUS.DONE, label: 'Done', color: '#10b981' }
+    { key: TASK_STATUS.IN_PROGRESS, label: 'In progress', color: '#2563eb' },
+    { key: TASK_STATUS.DONE, label: 'Done', color: '#16a34a' }
   ];
 
   if (!activeProject && !loading) {
     return (
       <div className="empty-state g" style={{ maxWidth: 540, margin: '60px auto' }}>
-        <div className="av grad" style={{ width: 64, height: 64, borderRadius: 20, margin: '0 auto 16px', fontSize: 24 }}>
-          📋
+        <div className="av grad" style={{ width: 64, height: 64, borderRadius: 12, margin: '0 auto 16px' }}>
+          <ClipboardIcon size={28} />
         </div>
         <h3>No projects in this workspace</h3>
         <p>Create a project first to use the Kanban Task Board.</p>
         {isOwnerOrAdmin && (
           <button className="btn" onClick={() => setProjectModalOpen(true)}>
-            ＋ Create Project
+            <PlusIcon size={14} />
+            <span>Create Project</span>
           </button>
         )}
         <CreateProjectModal
@@ -292,7 +294,8 @@ export const Board = () => {
               setTaskModalOpen(true);
             }}
           >
-            ＋ Add task
+            <PlusIcon size={14} />
+            <span>Add task</span>
           </button>
         </div>
       </div>
@@ -369,7 +372,10 @@ export const Board = () => {
                         <p>{t.title}</p>
 
                         <div className="f">
-                          <span>📅 {formatDate(t.dueDate)}</span>
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                            <CalendarIcon size={12} />
+                            <span>{formatDate(t.dueDate)}</span>
+                          </span>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                             <span
                               className="av"
@@ -391,11 +397,11 @@ export const Board = () => {
                                 setTaskToDelete(t);
                                 setDeleteConfirmOpen(true);
                               }}
-                              style={{ color: 'var(--mut)', padding: '2px 4px', fontSize: 12 }}
+                              style={{ color: 'var(--mut)', padding: '2px 4px', fontSize: 12, display: 'inline-flex', alignItems: 'center' }}
                               title="Delete task"
                               aria-label="Delete task"
                             >
-                              ✕
+                              <XIcon size={12} />
                             </button>
                           </div>
                         </div>
@@ -409,8 +415,9 @@ export const Board = () => {
         })}
       </div>
 
-      <div style={{ color: 'var(--mut)', marginTop: 14, fontSize: 12 }}>
-        💡 Drag &amp; drop cards between columns to change status, or click any card to edit details.
+      <div style={{ color: 'var(--mut)', marginTop: 14, fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <InfoIcon size={14} />
+        <span>Drag and drop cards between columns to change status, or click any card to edit details.</span>
       </div>
 
       {/* Task Modal for Create / Edit */}

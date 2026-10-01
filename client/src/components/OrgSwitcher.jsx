@@ -4,6 +4,7 @@ import { getGradientStyle } from '../utils/colors.js';
 import { CreateOrgModal } from './Modals.jsx';
 import { orgsApi } from '../api/client.js';
 import { useToast } from '../context/ToastContext.jsx';
+import { ChevronsUpDownIcon, CheckIcon, PlusIcon } from './Icons.jsx';
 
 export const OrgSwitcher = () => {
   const { organizations, activeOrg, switchOrg, refreshActiveOrg } = useOrg();
@@ -64,7 +65,7 @@ export const OrgSwitcher = () => {
             {activeOrg ? `${activeOrg.role} · ${activeOrg.memberCount || 1} members` : 'No active workspace'}
           </small>
         </span>
-        <span style={{ color: 'var(--mut)', fontSize: 16 }}>⇅</span>
+        <ChevronsUpDownIcon size={16} style={{ color: 'var(--mut)' }} />
       </button>
 
       {open && (
@@ -85,18 +86,18 @@ export const OrgSwitcher = () => {
                 </b>
                 <small style={{ color: 'var(--mut)', fontSize: 11 }}>{org.role}</small>
               </span>
-              {org.id === activeOrg?.id && <span style={{ color: 'var(--a)' }}>✓</span>}
+              {org.id === activeOrg?.id && <CheckIcon size={14} style={{ color: 'var(--primary)' }} />}
             </button>
           ))}
           <button
             type="button"
-            style={{ color: 'var(--a)', fontWeight: 700, borderTop: '1px solid var(--line)', marginTop: 4 }}
+            style={{ color: 'var(--primary)', fontWeight: 600, borderTop: '1px solid var(--line)', marginTop: 4, display: 'flex', alignItems: 'center', gap: 8 }}
             onClick={() => {
               setOpen(false);
               setModalOpen(true);
             }}
           >
-            <span>＋</span>
+            <PlusIcon size={14} />
             <span>Create organization</span>
           </button>
         </div>

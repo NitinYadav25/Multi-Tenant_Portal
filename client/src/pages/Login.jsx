@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
+import { LockIcon } from '../components/Icons.jsx';
 
 export const Login = () => {
   const [email, setEmail] = useState('demo@example.com');
@@ -44,7 +45,6 @@ export const Login = () => {
     }
   };
 
-
   const fillDemo = () => {
     setEmail('demo@example.com');
     setPassword('Demo@12345');
@@ -62,7 +62,7 @@ export const Login = () => {
           Every team. <span className="gt">Its own secure workspace.</span>
         </h1>
         <p>
-          Manage projects, assign tasks and switch between organizations in one click – with
+          Manage projects, assign tasks and switch between organizations in one click with
           strict tenant isolation built in.
         </p>
         <div className="fl">
@@ -74,22 +74,24 @@ export const Login = () => {
           <div className="g">
             <span className="pill HIGH">HIGH</span> <b>Ship v2 launch</b>
           </div>
-          <div className="g">
-            🔒 <b>Org data isolated</b>
+          <div className="g" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <LockIcon size={14} style={{ color: 'var(--primary)' }} />
+            <b>Org data isolated</b>
           </div>
         </div>
       </div>
 
       <div className="g form-card">
-        <h2>Welcome back 👋</h2>
+        <h2>Welcome back</h2>
         <div style={{ color: 'var(--mut)', marginBottom: 18 }}>Log in to your workspaces</div>
 
         {error && (
           <div
             style={{
               padding: '10px 14px',
-              borderRadius: 10,
-              background: '#f43f5e1f',
+              borderRadius: 8,
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
               color: 'var(--bad)',
               fontSize: 13,
               marginBottom: 16
@@ -128,7 +130,7 @@ export const Login = () => {
             style={{ width: '100%', marginTop: 22 }}
             disabled={loading}
           >
-            {loading ? 'Logging in...' : 'Log in →'}
+            {loading ? 'Logging in...' : 'Log in'}
           </button>
         </form>
 
@@ -136,17 +138,20 @@ export const Login = () => {
           <button
             type="button"
             onClick={fillDemo}
-            style={{ color: 'var(--a)', fontSize: 12, fontWeight: 600, textDecoration: 'underline' }}
+            style={{ color: 'var(--primary)', fontSize: 12, fontWeight: 600, textDecoration: 'underline' }}
           >
             Fill Demo Credentials (demo@example.com)
           </button>
         </div>
 
-        <div className="sec-note">🔐 Encrypted · JWT secured · Role-based access</div>
+        <div className="sec-note" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <LockIcon size={13} />
+          <span>Encrypted · JWT secured · Role-based access</span>
+        </div>
 
         <div style={{ textAlign: 'center', marginTop: 18, color: 'var(--mut)' }}>
           New here?{' '}
-          <Link to="/register" style={{ color: 'var(--a)', fontWeight: 700, textDecoration: 'none' }}>
+          <Link to="/register" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
             Create account
           </Link>
         </div>

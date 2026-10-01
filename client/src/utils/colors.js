@@ -1,15 +1,28 @@
+export const SOLID_PALETTES = [
+  { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' }, // Blue
+  { bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0' }, // Green
+  { bg: '#fffbeb', color: '#b45309', border: '#fde68a' }, // Amber
+  { bg: '#f5f3ff', color: '#6d28d9', border: '#ddd6fe' }, // Purple
+  { bg: '#fff1f2', color: '#be123c', border: '#fecdd3' }, // Rose
+  { bg: '#f0fdfa', color: '#0f766e', border: '#99f6e4' }, // Teal
+  { bg: '#f8fafc', color: '#334155', border: '#cbd5e1' }  // Slate
+];
+
 export const GRADIENT_PALETTES = [
-  ['#6d5dfc', '#c04df8'],
-  ['#22d3ee', '#6d5dfc'],
-  ['#f43f8e', '#f59e0b'],
-  ['#10b981', '#22d3ee'],
-  ['#f59e0b', '#f43f5e']
+  ['#2563eb', '#2563eb'],
+  ['#16a34a', '#16a34a'],
+  ['#d97706', '#d97706'],
+  ['#7c3aed', '#7c3aed'],
+  ['#0891b2', '#0891b2']
 ];
 
 export const getGradientStyle = (index = 0) => {
-  const [c1, c2] = GRADIENT_PALETTES[Math.abs(index) % GRADIENT_PALETTES.length];
+  const p = SOLID_PALETTES[Math.abs(index) % SOLID_PALETTES.length];
   return {
-    background: `linear-gradient(135deg, ${c1}, ${c2})`
+    background: p.bg,
+    color: p.color,
+    border: `1px solid ${p.border}`,
+    fontWeight: '700'
   };
 };
 

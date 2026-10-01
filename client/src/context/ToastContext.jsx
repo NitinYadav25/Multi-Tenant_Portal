@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { CheckIcon, XIcon, InfoIcon } from '../components/Icons.jsx';
 
 const ToastContext = createContext(null);
 
@@ -28,11 +29,12 @@ export const ToastProvider = ({ children }) => {
             className={`toast ${toast.type}`}
             onClick={() => removeToast(toast.id)}
             role="alert"
+            style={{ cursor: 'pointer' }}
           >
-            <span>
-              {toast.type === 'success' && '✓'}
-              {toast.type === 'error' && '✕'}
-              {toast.type === 'info' && 'ℹ'}
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+              {toast.type === 'success' && <CheckIcon size={16} />}
+              {toast.type === 'error' && <XIcon size={16} />}
+              {toast.type === 'info' && <InfoIcon size={16} />}
             </span>
             <span>{toast.message}</span>
           </div>

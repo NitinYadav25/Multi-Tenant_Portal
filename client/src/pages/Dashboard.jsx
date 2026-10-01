@@ -6,6 +6,15 @@ import { useToast } from '../context/ToastContext.jsx';
 import { projectsApi, orgsApi, membersApi } from '../api/client.js';
 import { getGradientStyle, GRADIENT_PALETTES, getInitials } from '../utils/colors.js';
 import { CreateProjectModal, CreateOrgModal } from '../components/Modals.jsx';
+import {
+  BuildingIcon,
+  FolderIcon,
+  ListTodoIcon,
+  UsersIcon,
+  CheckCircleIcon,
+  PlusIcon,
+  ShieldCheckIcon
+} from '../components/Icons.jsx';
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -79,7 +88,7 @@ export const Dashboard = () => {
       <svg className="sp" viewBox="0 0 110 46" aria-hidden="true">
         <defs>
           <linearGradient id={`s_${paletteIndex}`} x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stopColor={c1} stopOpacity="0.45" />
+            <stop offset="0" stopColor={c1} stopOpacity="0.3" />
             <stop offset="1" stopColor={c1} stopOpacity="0" />
           </linearGradient>
         </defs>
@@ -91,7 +100,7 @@ export const Dashboard = () => {
           d="M0 36 L18 28 L36 32 L54 18 L72 22 L90 8 L110 12"
           fill="none"
           stroke={c1}
-          strokeWidth="2.5"
+          strokeWidth="2"
         />
       </svg>
     );
@@ -100,13 +109,14 @@ export const Dashboard = () => {
   if (!activeOrg && organizations.length === 0) {
     return (
       <div className="empty-state g" style={{ maxWidth: 540, margin: '60px auto' }}>
-        <div className="av grad" style={{ width: 64, height: 64, borderRadius: 20, margin: '0 auto 16px', fontSize: 24 }}>
-          🏢
+        <div className="av grad" style={{ width: 64, height: 64, borderRadius: 12, margin: '0 auto 16px' }}>
+          <BuildingIcon size={28} />
         </div>
         <h3>No organizations found</h3>
         <p>Get started by creating your first organization workspace.</p>
         <button className="btn" onClick={() => setOrgModalOpen(true)}>
-          ＋ Create Organization
+          <PlusIcon size={14} />
+          <span>Create Organization</span>
         </button>
         <CreateOrgModal
           isOpen={orgModalOpen}
@@ -118,10 +128,10 @@ export const Dashboard = () => {
   }
 
   const statCards = [
-    { title: 'Projects', value: stats.projects, trend: '+2', icon: '▦' },
-    { title: 'Open tasks', value: stats.openTasks, trend: '+12%', icon: '✓' },
-    { title: 'Members', value: stats.members, trend: '+1', icon: '☺' },
-    { title: 'Completed', value: stats.completedTasks, trend: '+8%', icon: '★' }
+    { title: 'Projects', value: stats.projects, trend: '+2', icon: <FolderIcon size={17} /> },
+    { title: 'Open tasks', value: stats.openTasks, trend: '+12%', icon: <ListTodoIcon size={17} /> },
+    { title: 'Members', value: stats.members, trend: '+1', icon: <UsersIcon size={17} /> },
+    { title: 'Completed', value: stats.completedTasks, trend: '+8%', icon: <CheckCircleIcon size={17} /> }
   ];
 
   return (
@@ -129,7 +139,7 @@ export const Dashboard = () => {
       <div className="hd">
         <div>
           <h1>
-            Good day, <span className="gt">{user?.name?.split(' ')[0] || 'Demo'}</span> 👋
+            Good day, <span className="gt">{user?.name?.split(' ')[0] || 'Demo'}</span>
           </h1>
           <div className="s">Here’s what’s happening in {activeOrg?.name || 'Workspace'}</div>
         </div>
@@ -138,14 +148,15 @@ export const Dashboard = () => {
           <input
             type="search"
             className="srch"
-            placeholder="🔍 Search projects..."
+            placeholder="Search projects..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           {isOwnerOrAdmin ? (
             <button className="btn" onClick={() => setProjectModalOpen(true)}>
-              ＋ New project
+              <PlusIcon size={14} />
+              <span>New project</span>
             </button>
           ) : (
             <span className="pill LOW">Member access</span>
@@ -160,9 +171,9 @@ export const Dashboard = () => {
             <div className="ic" style={getGradientStyle(idx)}>
               {s.icon}
             </div>
-            <span className="d">{s.trend}</span>
-            <b>{loading ? '-' : s.value}</b>
+            <b>{s.value}</b>
             <span>{s.title}</span>
+            <div className="d">{s.trend}</div>
             {renderSparkline(idx)}
           </div>
         ))}
@@ -186,7 +197,8 @@ export const Dashboard = () => {
               <p>Create your first project to start organizing tasks and collaborating.</p>
               {isOwnerOrAdmin && (
                 <button className="btn" onClick={() => setProjectModalOpen(true)}>
-                  ＋ Create Project
+                  <PlusIcon size={14} />
+                  <span>Create Project</span>
                 </button>
               )}
             </div>
@@ -204,7 +216,7 @@ export const Dashboard = () => {
                     <div
                       className="ring"
                       style={{
-                        background: `conic-gradient(${GRADIENT_PALETTES[idx % GRADIENT_PALETTES.length][0]} ${p.progress || 0}%, var(--line) 0)`
+                        background: `conic-gradient(var(--primary) ${p.progress || 0}%, var(--line) 0)`
                       }}
                     >
                       <span>{p.progress || 0}%</span>
@@ -225,9 +237,23 @@ export const Dashboard = () => {
                           {getInitials(m.user?.name || m.name)}
                         </span>
                       ))}
+                      {members.length > 3 && (
+                        <span
+                          className="av"
+                          style={{
+                            background: 'var(--card)',
+                            color: 'var(--mut)',
+                            fontSize: 10,
+                            border: '1px solid var(--line)'
+                          }}
+                        >
+                          +{members.length - 3}
+                        </span>
+                      )}
                     </div>
+
                     <span style={{ color: 'var(--mut)', fontSize: 12 }}>
-                      {p.totalTasks || 0} tasks
+                      {p.taskCount || 0} tasks
                     </span>
                   </div>
                 </div>
@@ -236,10 +262,11 @@ export const Dashboard = () => {
           )}
         </div>
 
-        {/* Right Column: Recent Activity & Tenant Shield */}
+        {/* Right Column: Activity & Security Info */}
         <div>
+          <h3 className="sec2">Recent activity</h3>
+
           <div className="g act">
-            <h3 className="sec2">Recent activity</h3>
             {stats.recentActivity && stats.recentActivity.length > 0 ? (
               stats.recentActivity.map((a, i) => (
                 <div key={a.id || i} className="ai">
@@ -247,15 +274,17 @@ export const Dashboard = () => {
                     className="av"
                     style={{
                       ...getGradientStyle(i),
-                      width: 30,
-                      height: 30,
-                      borderRadius: '50%'
+                      width: 26,
+                      height: 26,
+                      fontSize: 11
                     }}
                   >
-                    {a.actor?.[0] || 'U'}
+                    {a.user ? getInitials(a.user.name) : 'SYS'}
                   </span>
-                  <div>
-                    <b>{a.actor}</b> {a.action}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                      <b>{a.user?.name || 'A team member'}</b> {a.action || 'updated a task'}
+                    </div>
                     <small>
                       {a.updatedAt
                         ? new Date(a.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -272,12 +301,15 @@ export const Dashboard = () => {
           </div>
 
           <div className="g shield">
-            <b>🛡️ Tenant isolation active</b>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 700 }}>
+              <ShieldCheckIcon size={16} style={{ color: 'var(--primary)' }} />
+              <span>Tenant isolation active</span>
+            </div>
             <ul>
-              <li>✓ Membership verified on every request</li>
-              <li>✓ Active Role: {activeRole}</li>
-              <li>✓ Cross-org access blocked (404)</li>
-              <li>✓ Data strictly segmented by organization</li>
+              <li>Membership verified on every request</li>
+              <li>Active Role: {activeRole}</li>
+              <li>Cross-org access blocked (404)</li>
+              <li>Data strictly segmented by organization</li>
             </ul>
           </div>
         </div>

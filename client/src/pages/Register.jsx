@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useToast } from '../context/ToastContext.jsx';
+import { ShieldCheckIcon, LockIcon } from '../components/Icons.jsx';
 
 export const Register = () => {
   const [name, setName] = useState('');
@@ -20,13 +21,13 @@ export const Register = () => {
     }
   }, [user, navigate]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name || !email || !password) {
       setError('Please fill in all fields.');
       return;
     }
+
     if (password.length < 6) {
       setError('Password must be at least 6 characters.');
       return;
@@ -35,7 +36,7 @@ export const Register = () => {
     try {
       setLoading(true);
       setError('');
-      await register(name.trim(), email.trim(), password);
+      await register(name, email, password);
       showToast('Account created successfully!', 'success');
       navigate('/dashboard', { replace: true });
     } catch (err) {
@@ -68,22 +69,24 @@ export const Register = () => {
           <div className="g">
             <span className="pill LOW">ENCRYPTED</span> <b>bcrypt (cost 12)</b>
           </div>
-          <div className="g">
-            🛡️ <b>Strict Tenant Scope</b>
+          <div className="g" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <ShieldCheckIcon size={14} style={{ color: 'var(--primary)' }} />
+            <b>Strict Tenant Scope</b>
           </div>
         </div>
       </div>
 
       <div className="g form-card">
-        <h2>Create an account 🚀</h2>
+        <h2>Create an account</h2>
         <div style={{ color: 'var(--mut)', marginBottom: 18 }}>Start your secure team workspace</div>
 
         {error && (
           <div
             style={{
               padding: '10px 14px',
-              borderRadius: 10,
-              background: '#f43f5e1f',
+              borderRadius: 8,
+              background: '#fef2f2',
+              border: '1px solid #fecaca',
               color: 'var(--bad)',
               fontSize: 13,
               marginBottom: 16
@@ -133,15 +136,18 @@ export const Register = () => {
             style={{ width: '100%', marginTop: 22 }}
             disabled={loading}
           >
-            {loading ? 'Creating Account...' : 'Get Started →'}
+            {loading ? 'Creating Account...' : 'Get Started'}
           </button>
         </form>
 
-        <div className="sec-note">🔐 Encrypted · JWT secured · Role-based access</div>
+        <div className="sec-note" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <LockIcon size={13} />
+          <span>Encrypted · JWT secured · Role-based access</span>
+        </div>
 
         <div style={{ textAlign: 'center', marginTop: 18, color: 'var(--mut)' }}>
           Already have an account?{' '}
-          <Link to="/login" style={{ color: 'var(--a)', fontWeight: 700, textDecoration: 'none' }}>
+          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
             Log in
           </Link>
         </div>
